@@ -1,0 +1,111 @@
+<div class="container">
+  @for(post of posts; track post){
+  <div class="row">
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="modal_{{ post.id }}"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            @for (user of users; track user){ @if(post.userId === user.id){
+            <div class="d-flex flex-column">
+              <p style="font-size: 0.75rem">
+                Post pubblicato da: {{ user.name }} alias <a data-bs-dismiss="modal"
+                aria-label="Close" routerLink="user/{{user.id}}">{{ user.username }}</a>
+              </p>
+              <h1
+                [ngClass]="
+                  currentTheme === 'red' ? 'text-danger' : 'text-primary'
+                "
+                class="modal-title fs-5"
+                id="exampleModalLabel"
+              >
+                {{ post.title }}
+              </h1>
+            </div>
+            }}
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            {{ post.body }}
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Chiudi
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-2"></div>
+    <!-- POST CARD -->
+    <div class="col-md-8">
+      <div class="card border-0">
+        <div class="card-body">
+          <blockquote
+            class="blockquote mb-0 d-flex justify-content-start align-items-center"
+          >
+            @for (user of users; track user){ @if(post.userId === user.id){
+            <button
+              [ngClass]="currentTheme === 'red' ? 'btn-danger' : 'btn-primary'"
+              id="square"
+              type="button"
+              data-bs-toggle="modal"
+              attr.data-bs-target="#modal_{{ post.id }}"
+              class="btn mx-3 text-white text-center d-flex align-items-center justify-content-center"
+            >
+              <h5 class="m-0">{{ user.name | shortName }}</h5>
+            </button>
+            } }
+
+            <div>
+              <h2
+                [ngClass]="
+                  currentTheme === 'red' ? 'text-danger' : 'text-primary'
+                "
+              >
+                {{ post.title }}
+              </h2>
+              
+              @for (user of users; track user){ @if(post.userId === user.id){
+              <p id="author-p">
+                Pubblicato da: <a routerLink="user/{{user.id}}" id="username">{{ user.username }}</a>
+              </p>
+              } }
+            </div>
+          </blockquote>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2"></div>
+  </div>
+  <div class="row">
+    <div class="col-md-2"></div>
+    <div class="col-md-8"><hr /></div>
+    <div class="col-md-2"></div>
+  </div>
+  }
+</div>
+
+<button id="change-theme" (click)="onChangeTheme()">
+  <span class="text">Change theme </span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+  <span class="blob"></span>
+</button>
